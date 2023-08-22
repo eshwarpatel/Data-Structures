@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the linked list
+struct ListNode {
+    int data;
+    struct ListNode *next;
+};
+
+// Function to insert a new node at the beginning of the list
+void insertAtBeginning(struct ListNode **head, int data) {
+    struct ListNode *newNode = (struct ListNode *)malloc(sizeof(struct ListNode));
+    newNode->data = data;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+// Function to reverse the linked list
+struct ListNode* reverseList(struct ListNode* head) {
+    struct ListNode* prev = NULL;
+    struct ListNode* current = head;
+    struct ListNode* next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    return prev;
+}
+
+// Function to display the linked list
+void display(struct ListNode *head) {
+    struct ListNode *current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+	printf("name : S.ESHWAR\n");
+    struct ListNode *list = NULL;
+
+    insertAtBeginning(&list, 5);
+    insertAtBeginning(&list, 4);
+    insertAtBeginning(&list, 3);
+    insertAtBeginning(&list, 2);
+    insertAtBeginning(&list, 1);
+
+    printf("Original Linked List: ");
+    display(list);
+
+    list = reverseList(list);
+
+    printf("Reversed Linked List: ");
+    display(list);
+
+    return 0;
+}
