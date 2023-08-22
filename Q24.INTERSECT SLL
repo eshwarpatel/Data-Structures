@@ -1,0 +1,81 @@
+//INTERSECT SLL   192210478
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the linked list
+struct ListNode {
+    int data;
+    struct ListNode *next;
+};
+
+// Function to find the length of a linked list
+int findLength(struct ListNode *head) {
+    int length = 0;
+    struct ListNode *current = head;
+    while (current != NULL) {
+        length++;
+        current = current->next;
+    }
+    return length;
+}
+
+// Function to find the intersection point of two linked lists
+struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB) {
+    int lenA = findLength(headA);
+    int lenB = findLength(headB);
+    
+    // Move the longer list's head pointer ahead by the difference in lengths
+    while (lenA > lenB) {
+        headA = headA->next;
+        lenA--;
+    }
+    while (lenB > lenA) {
+        headB = headB->next;
+        lenB--;
+    }
+    
+    // Move both pointers until they meet at the intersection point
+    while (headA != headB) {
+        headA = headA->next;
+        headB = headB->next;
+    }
+    
+    return headA; // or headB, both are the same intersection point
+}
+
+int main() {
+	printf("name : S.ESHWAR\n");
+    struct ListNode *listA = NULL;
+    struct ListNode *listB = NULL;
+
+    // Creating the linked lists
+    listA = (struct ListNode *)malloc(sizeof(struct ListNode));
+    listA->data = 1;
+    listA->next = NULL;
+
+    listB = (struct ListNode *)malloc(sizeof(struct ListNode));
+    listB->data = 5;
+    listB->next = NULL;
+
+    struct ListNode *commonNode = (struct ListNode *)malloc(sizeof(struct ListNode));
+    commonNode->data = 10;
+    commonNode->next = NULL;
+
+    listA->next = commonNode;
+    listB->next = commonNode;
+
+    // Printing the linked lists
+    printf("List A: %d -> %d -> %d -> NULL\n", listA->data, commonNode->data, commonNode->next);
+    printf("List B: %d -> %d -> %d -> NULL\n", listB->data, commonNode->data, commonNode->next);
+
+    // Finding the intersection point
+    struct ListNode *intersection = getIntersectionNode(listA, listB);
+
+    if (intersection != NULL) {
+        printf("Intersection point: %d\n", intersection->data);
+    } else {
+        printf("No intersection point found.\n");
+    }
+
+    return 0;
+}
