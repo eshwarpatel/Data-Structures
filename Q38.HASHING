@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Division Hashing
+#define TABLE_SIZE 10
+
+// Hash function using division
+int divisionHash(int key) {
+    return key % TABLE_SIZE;
+}
+
+// Multiplication Hashing
+#define A 0.6180339887 // The golden ratio
+
+// Hash function using multiplication
+int multiplicationHash(int key) {
+    double val = key * A;
+    val = val - (int)val; // Extract the fractional part
+    return (int)(TABLE_SIZE * val);
+}
+
+// Open Addressing Hashing (Linear Probing)
+#define HASH_TABLE_SIZE 10
+
+struct HashEntry {
+    int key;
+    int value;
+};
+
+struct HashEntry *hashTable[HASH_TABLE_SIZE];
+
+void initHashTable() {
+    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+        hashTable[i] = NULL;
+    }
+}
+
+int linearProbingHash(int key) {
+    return key % HASH_TABLE_SIZE;
+}
+
+void insertLinearProbing(int key, int value) {
+    int index = linearProbingHash(key);
+    while (hashTable[index] != NULL) {
+        index = (index + 1) % HASH_TABLE_SIZE;
+    }
+
+    struct HashEntry *entry = (struct HashEntry *)malloc(sizeof(struct HashEntry));
+    entry->key = key;
+    entry->value = value;
+    hashTable[index] = entry;
+}
+
+int main() {
+	printf("name : S.ESHWAR\n");
+	printf("regno : 192210478\n");
+    // Division Hashing
+    int key1 = 23;
+    int index1 = divisionHash(key1);
+    printf("Division Hashing - Key: %d, Index: %d\n", key1, index1);
+
+    // Multiplication Hashing
+    int key2 = 42;
+    int index2 = multiplicationHash(key2);
+    printf("Multiplication Hashing - Key: %d, Index: %d\n", key2, index2);
+
+    // Open Addressing Hashing (Linear Probing)
+    initHashTable();
+    insertLinearProbing(5, 50);
+    insertLinearProbing(15, 150);
+    insertLinearProbing(25, 250);
+
+    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+        if (hashTable[i] != NULL) {
+            printf("Open Addressing Hashing - Index: %d, Key: %d, Value: %d\n", i, hashTable[i]->key, hashTable[i]->value);
+        }
+    }
+
+    return 0;
+}
